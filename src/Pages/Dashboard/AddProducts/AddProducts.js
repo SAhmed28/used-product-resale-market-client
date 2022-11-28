@@ -15,7 +15,7 @@ const AddProducts = () => {
     console.log(process.env.REACT_APP_imgbb_key)
 
 
-    let date = new Date();
+    let date = new Date().toISOString().slice(0, 10);
 
     const handleAddProducts = data => {
         console.log(data);
@@ -56,7 +56,7 @@ const AddProducts = () => {
                 .then(result => {
                     console.log(result);
                     toast.success(`${data.productName} is added successfully!`);
-                    navigate('/dashboard')
+                    navigate('/dashboard/seller')
                 })
             }
         })
