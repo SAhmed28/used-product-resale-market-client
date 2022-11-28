@@ -1,6 +1,5 @@
 import React, { useContext } from 'react';
 import { useForm } from "react-hook-form";
-import { useQuery } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../../contexts/AuthProvider';
@@ -11,25 +10,63 @@ const AddProducts = () => {
     const navigate = useNavigate();
 
     const brands = ['Apple', 'Asus', 'Dell', 'HP', 'Acer', 'Lenovo', 'Microsoft'];
+    const imgHostKey = process.env.REACT_APP_imgbb_key;
 
-    const { data: products, isLoading } = useQuery({
-        queryKey: ['newProduct'],
-        queryFn: async () => {
-            const res = await fetch('http://localhost:5000/addproduct');
-            const data = await res.json();
-            return data;
-        }
-    })
+    console.log(process.env.REACT_APP_imgbb_key)
 
-    const handleAddDoctor = data => {
-        console.log(data)
+
+    let date = new Date();
+
+    const handleAddProducts = data => {
+        console.log(data);
+        const image = data.image[0];
+        const formData = new FormData();
+        formData.append('image', image);
+        const url = `https://api.imgbb.com/1/upload?key=${imgHostKey}`
+
+        fetch(url, {
+            method: 'POST',
+            body: formData
+        })
+        .then(res => res.json())
+        .then(imgData => {
+            if(imgData.success){
+                console.log(imgData.data.url);
+                const product = {
+                    productName: data.productName,
+                    productBrand: data.productBrand,
+                    location: data.location,
+                    resalePrice: data.resalePrice,
+                    originalPrice: data.originalPrice,
+                    yearsOfUse: data.yearsOfUse,
+                    sellerName: user?.displayName,
+                    email: user?.email,
+                    image: imgData.data.url,
+                    date
+                }
+
+                fetch('http://localhost:5000/products', {
+                    method: 'POST',
+                    headers: {
+                        'content-type' : 'application/json'
+                    },
+                    body: JSON.stringify(product)
+                })
+                .then(res => res.json())
+                .then(result => {
+                    console.log(result);
+                    toast.success(`${data.productName} is added successfully!`);
+                    navigate('/dashboard')
+                })
+            }
+        })
     }
 
     return (
         <div className='w-[450px] mx-auto shadow-xl p-7 my-4'>
             <h2 className='text-2xl text-center text-primary font-bold'>Add A Product</h2>
 
-            <form onSubmit={handleSubmit(handleAddDoctor)}>
+            <form onSubmit={handleSubmit(handleAddProducts)}>
                 {/* product image */}
                 <div className="form-control w-full">
                     <label className="label">
@@ -39,7 +76,7 @@ const AddProducts = () => {
                         {...register("image", { required: "Image is required" })}
                         className=""
                     />
-                    {errors.img && <p className='text-error'>{errors.img?.message}</p>}
+                    {errors.image && <p className='text-error'>{errors.image?.message}</p>}
                 </div>
 
                 {/* Product Name */}
@@ -60,7 +97,7 @@ const AddProducts = () => {
                         <span className="label-text">Product Brand</span>
                     </label>
                     <select 
-                    {...register("specialty", { required: "Specialty is required" })}
+                    {...register("productBrand", { required: "Specialty is required" })}
                     className="select select-bordered w-full">
                         {
                             brands.map((brand, i) => 
@@ -68,7 +105,7 @@ const AddProducts = () => {
                         }
                     </select>
 
-                    {errors.specialty && <p className='text-error'>{errors.specialty?.message}</p>}
+                    {errors.productBrand && <p className='text-error'>{errors.productBrand?.message}</p>}
                 </div>
 
                 {/* location */}
@@ -86,7 +123,7 @@ const AddProducts = () => {
                 {/* resale price */}
                 <div className="form-control w-full">
                     <label className="label">
-                        <span className="label-text">Resale Price</span>
+                        <span className="label-text">Resale Price: $</span>
                     </label>
                     <input type="text"
                         {...register("resalePrice", {
@@ -97,10 +134,10 @@ const AddProducts = () => {
                     {errors.resalePrice && <p className='text-error'>{errors.resalePrice?.message}</p>}
                 </div>
 
-                {/* resale price */}
+                {/* original price */}
                 <div className="form-control w-full">
                     <label className="label">
-                        <span className="label-text">Original Price</span>
+                        <span className="label-text">Original Price: $</span>
                     </label>
                     <input type="text"
                         {...register("originalPrice", {
@@ -117,7 +154,9 @@ const AddProducts = () => {
                         <span className="label-text">Years of use</span>
                     </label>
                     <input type="text"
-                        {...register("yearsOfUse")}
+                        {...register("yearsOfUse", {
+                            pattern: { value: /(?=.*[0-9])/, message: 'Years must be a number' }
+                        })}
                         className="input input-bordered w-full"
                     />
                     {errors.yearsOfUse && <p className='text-error'>{errors.yearsOfUse?.message}</p>}
@@ -128,7 +167,6 @@ const AddProducts = () => {
                         <span className="label-text">Seller Name</span>
                     </label>
                     <input type="text" defaultValue={user?.displayName} disabled
-                        {...register("sellerName", { required: "Name is required" })}
                         className="input input-bordered w-full"
                     />
                     {errors.sellerName && <p className='text-error'>{errors.sellerName?.message}</p>}
@@ -139,14 +177,13 @@ const AddProducts = () => {
                         <span className="label-text">Email</span>
                     </label>
                     <input type="email" defaultValue={user?.email} disabled
-                        {...register("email", { required: "Email Address is required" })}
                         className="input input-bordered w-full"
                     />
                     {errors.email && <p className='text-error'>{errors.email?.message}</p>}
                 </div>
 
 
-                <input type="submit" className='btn btn-accent w-full mt-9 mb-3' value='Add' />
+                <input type="submit" className='btn btn-primary text-white w-full mt-9 mb-3' value='Add' />
 
             </form>
         </div>
