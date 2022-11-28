@@ -21,13 +21,13 @@ const Main = () => {
                         <div className='bg-accent px-8 py-4'>
                             <h2 className='text-xl font-bold text-font1'>Top Categories</h2>
                         </div>
-                        <li className='hover:text-primary px-8 border-b-2 border-font1 '><Link className='hover:bg-white font-semibold' to='/apple'>Apple</Link></li>
-                        <li className='hover:text-primary px-8 border-b-2 border-font1'><Link className='hover:bg-white font-semibold' to='/asus'>Asus</Link></li>
-                        <li className='hover:text-primary px-8 border-b-2 border-font1'><Link className='hover:bg-white font-semibold' to='/dell'>Dell</Link></li>
-                        <li className='hover:text-primary px-8 border-b-2 border-font1'><Link className='hover:bg-white font-semibold' to='/hp'>HP</Link></li>
-                        <li className='hover:text-primary px-8 border-b-2 border-font1'><Link className='hover:bg-white font-semibold' to='/acer'>Acer</Link></li>
-                        <li className='hover:text-primary px-8 border-b-2 border-font1'><Link className='hover:bg-white font-semibold' to='/lenovo'>Lenovo</Link></li>
-                        <li className='hover:text-primary px-8 border-b-2 border-font1'><Link className='hover:bg-white font-semibold' to='/microsoft'>Microsoft</Link></li>
+                        <li className='hover:text-primary px-8 border-b-2 border-font1 '><Link className='hover:bg-white font-semibold' to='/category/apple'>Apple</Link></li>
+                        <li className='hover:text-primary px-8 border-b-2 border-font1'><Link className='hover:bg-white font-semibold' to='/category/asus'>Asus</Link></li>
+                        <li className='hover:text-primary px-8 border-b-2 border-font1'><Link className='hover:bg-white font-semibold' to='/category/dell'>Dell</Link></li>
+                        <li className='hover:text-primary px-8 border-b-2 border-font1'><Link className='hover:bg-white font-semibold' to='/category/hp'>HP</Link></li>
+                        <li className='hover:text-primary px-8 border-b-2 border-font1'><Link className='hover:bg-white font-semibold' to='/category/acer'>Acer</Link></li>
+                        <li className='hover:text-primary px-8 border-b-2 border-font1'><Link className='hover:bg-white font-semibold' to='/category/lenovo'>Lenovo</Link></li>
+                        <li className='hover:text-primary px-8 border-b-2 border-font1'><Link className='hover:bg-white font-semibold' to='/category/microsoft'>Microsoft</Link></li>
                         {/* {
                             isAdmin && 
                             <>

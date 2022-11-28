@@ -11,7 +11,7 @@ const BannerItem = ({ slide }) => {
             <div>
                 <div className="absolute flex justify-end transform -translate-y-1/2 right-34 top-1/3">
                 <h1 className='font-bold'>
-                    <span className='text-4xl text-font2'>High Quality</span> <br />
+                    <span className='text-4xl text-font2'>Second Hand</span> <br />
                     <span className='text-5xl text-primary'>{brand} Laptops</span> <br />
                     <span className='text-3xl text-font2'>Now From <span className='text-black font-extrabold'>${price}</span></span> <br />
                 </h1>
