@@ -5,31 +5,16 @@ import useAdmin from '../hooks/useAdmin';
 import useSeller from '../hooks/useSeller';
 import Footer from '../Pages/Shared/Footer/Footer';
 import Navbar from '../Pages/Shared/Navbar/Navbar';
+import Loading from '../Pages/Shared/Loading/Loading'
 
 const DashboardLayout = () => {
     const {user} = useContext(AuthContext);
-    const [isAdmin] = useAdmin(user?.email);
-    const [isSeller, isSellerLoading] = useSeller(user?.email);
-    let [userRole] = useState('');
 
-    console.log('isSeller: ',isSeller);
+    const [userRole] = useAdmin(user?.email);
+    const currentUser = userRole.user?.role;
 
-    if(isAdmin){
-        userRole = "admin";
-    }
-    else if(isSeller){
-        userRole = "seller"
-        console.log('I am true!')
-    }
-    else{
-        userRole = "buyer"
-    }
+    // console.log(userRole.user?.role);
 
-    console.log(userRole);
-
-    if(isSellerLoading){
-        return 
-    }
 
     return (
         <div>
@@ -49,7 +34,7 @@ const DashboardLayout = () => {
                             <h2 className='text-xl font-bold text-font1'>Add / View</h2>
                         </div>
                         {
-                            userRole === "admin" && 
+                            currentUser === "admin" && 
                             <>
                                 <li className='hover:text-primary px-8 border-b-2 border-font1 '><Link to='/dashboard/allsellers' className='hover:bg-white font-semibold'>All Sellers</Link></li>
                                 <li className='hover:text-primary px-8 border-b-2 border-font1 '><Link to='/dashboard/allbuyers' className='hover:bg-white font-semibold'>All Buyers</Link></li>
@@ -57,7 +42,7 @@ const DashboardLayout = () => {
                             </>
                         }
                         {
-                            userRole === "seller" && 
+                            currentUser === "seller" && 
                             <>
                                 <li className='hover:text-primary px-8 border-b-2 border-font1 '><Link to='/dashboard/addproduct' className='hover:bg-white font-semibold'>Add a Product</Link></li>
                                 <li className='hover:text-primary px-8 border-b-2 border-font1 '><Link to='/dashboard/myproducts' className='hover:bg-white font-semibold'>My Products</Link></li>
@@ -65,7 +50,7 @@ const DashboardLayout = () => {
                             </>
                         }
                         {
-                            userRole === "buyer" && 
+                            currentUser === "buyer" && 
                             <>
                                 <li className='hover:text-primary px-8 border-b-2 border-font1 '><Link to='/dashboard/myorders' className='hover:bg-white font-semibold'>My Orders</Link></li>
                             </>

@@ -1,10 +1,14 @@
 import React, { useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../../contexts/AuthProvider';
+import useAdmin from '../../../hooks/useAdmin';
 
 const Navbar = () => {
     const { user, logOut } = useContext(AuthContext);
     const navigate = useNavigate();
+
+    const [userRole] = useAdmin(user?.email);
+    const currentUser = userRole.user?.role;
 
     const handleLogOut = () => {
         logOut()
@@ -20,7 +24,21 @@ const Navbar = () => {
             {
                 user?.uid ?
                     <>
-                        <li><Link to="/dashboard">Dashboard</Link></li>
+                        { currentUser === "admin" &&
+                            <>
+                                <li><Link to="/dashboard/admin">Dashboard</Link></li>
+                            </>
+                        }
+                        { currentUser === "seller" &&
+                            <>
+                                <li><Link to="/dashboard/seller">Dashboard</Link></li>
+                            </>
+                        }
+                        { currentUser === "buyer" &&
+                            <>
+                                <li><Link to="/dashboard/buyer">Dashboard</Link></li>
+                            </>
+                        }
                         <li><button onClick={handleLogOut}>Sign Out</button></li>
                     </>
                     :
