@@ -1,35 +1,55 @@
 import React, { useContext, useState } from 'react';
 import { useForm } from "react-hook-form";
 import { Link } from 'react-router-dom';
+import toast from 'react-hot-toast';
 import { AuthContext } from '../../contexts/AuthProvider';
 import { FaGoogle } from "react-icons/fa";
 
 const SignUp = () => {
     const { register, formState: { errors }, handleSubmit } = useForm();
-    const {createUser, updateUser} = useContext(AuthContext);
+    const { createUser, updateUser } = useContext(AuthContext);
     const [signUpError, setSignUPError] = useState('');
+
+    const [createdUserEmail, setCreatedUserEmail] = useState('');
 
     const handleSignUp = (data) => {
         console.log(data);
 
-        // createUser(data.email, data.password)
-        // .then(res => {
-        //     const user = res.user;
-        //     console.log(user);
-        //     toast('User Created Successfully.')
-        //     const userInfo = {
-        //         displayName: data.name
-        //     }
-        //     updateUser(userInfo)
-        //         .then(() => {
-        //             saveUser(data.name, data.email)
-        //          })
-        //         .catch(err => console.log(err));
-        // })
-        // .catch(error => {
-        //     console.log(error)
-        //     setSignUPError(error.message)
-        // });
+        createUser(data.email, data.password, data.role)
+            .then(res => {
+                const user = res.user;
+                console.log(user);
+                toast.success('User Created Successfully.')
+                const userInfo = {
+                    displayName: data.name
+                }
+                updateUser(userInfo)
+                    .then(() => {
+                        saveUser(data.name, data.email, data.role)
+                        console.log("User info updated")
+                    })
+                    .catch(err => console.log(err));
+            })
+            .catch(error => {
+                console.log(error)
+                setSignUPError(error.message)
+            });
+
+        const saveUser = (name, email, role) => {
+            const user = { name, email, role };
+            fetch('http://localhost:5000/users', {
+                method: 'POST',
+                headers: {
+                    'content-type': 'application/json'
+                },
+                body: JSON.stringify(user)
+            })
+                .then(res => res.json())
+                .then(data => {
+                    setCreatedUserEmail(email);
+
+                })
+        };
     }
 
     return (
@@ -76,6 +96,19 @@ const SignUp = () => {
                     {errors.password && <p className='text-error'>{errors.password?.message}</p>}
                 </div>
 
+
+                <div className='form-control w-full my-4 border-2 border-primary p-2'>
+                    <select {...register("role", { required: "Role is required" })}>
+                        <option value="buyer">Buyer</option>
+                        <option value="seller">Seller</option>
+                        {/* <option value="admin">Admin</option> */}
+                    </select>
+                    {errors.role && <p className='text-error'>{errors.role?.message}</p>}
+                </div>
+
+
+
+
                 <input type="submit" className='btn btn-secondary text-white w-full mt-9 mb-3' value='Sign Up' />
 
             </form>
@@ -84,7 +117,7 @@ const SignUp = () => {
 
             <div>
                 <div className="divider mt-4">OR</div>
-                <button className='btn btn-outline btn-secondary w-full mt-4 mb-3'> <FaGoogle/> <span className='mx-4'>Continue with google</span></button>
+                <button className='btn btn-outline btn-secondary w-full mt-4 mb-3'> <FaGoogle /> <span className='mx-4'>Continue with google</span></button>
             </div>
         </div>
     );
