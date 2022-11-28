@@ -2,7 +2,6 @@ import React, { useContext, useState } from 'react';
 import { Link, Outlet } from 'react-router-dom';
 import { AuthContext } from '../contexts/AuthProvider';
 import useAdmin from '../hooks/useAdmin';
-import useSeller from '../hooks/useSeller';
 import Footer from '../Pages/Shared/Footer/Footer';
 import Navbar from '../Pages/Shared/Navbar/Navbar';
 import Loading from '../Pages/Shared/Loading/Loading'
@@ -11,9 +10,9 @@ const DashboardLayout = () => {
     const {user} = useContext(AuthContext);
 
     const [userRole] = useAdmin(user?.email);
-    const currentUser = userRole.user?.role;
+    const currentUser = userRole?.role;
 
-    // console.log(userRole.user?.role);
+    // console.log(userRole.role);
 
 
     return (

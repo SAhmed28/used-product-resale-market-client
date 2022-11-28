@@ -8,7 +8,7 @@ const Navbar = () => {
     const navigate = useNavigate();
 
     const [userRole] = useAdmin(user?.email);
-    const currentUser = userRole.user?.role;
+    const currentUser = userRole?.role;
 
     const handleLogOut = () => {
         logOut()
