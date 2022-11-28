@@ -6,15 +6,15 @@ module.exports = {
   daisyui: {
     themes: [
       {
-        resaletheme: {
-          primary: "#0088cc",
-          secondary: "#006699",
-          accent: "#555",
-          navHead: "#f6f7f9",
-          productBg: "#f8f8f8",
-          fontColorMain: "#222529",
-          fontColorSecondary: "#777",
-          "neutral": "#3D4451",
+        doctorstheme: {
+          primary: "#08c",
+          secondary: "#0077b2",
+          accent: "#f6f7f9",
+          productBg: "#e5e4e2",
+          pinky: "#eb2771",
+          font1: "#313131",
+          font2: "#777",
+          "neutral": "#e5e4e2",
           "base-100": "#FFFFFF",
           "info": "#3ABFF8",
           "success": "#36D399",
@@ -23,6 +23,9 @@ module.exports = {
         },
       },
     ],
+  },
+  theme: {
+    extend: {},
   },
   plugins: [require("daisyui")],
 }
