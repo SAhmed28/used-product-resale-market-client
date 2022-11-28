@@ -1,10 +1,13 @@
 import React from 'react';
 import { createBrowserRouter } from 'react-router-dom';
+import DashboardLayout from '../layout/DashboardLayout';
 import Main from '../layout/Main';
 import CategoryItems from '../Pages/CategoryItems/CategoryItems';
 import Home from '../Pages/Home/Home/Home'
 import Login from '../Pages/Login/Login';
+import DisplayError from '../Pages/Shared/DisplayError/DisplayError';
 import SignUp from '../Pages/SignUp/SignUp';
+import PrivateRoute from '../Routes/PrivateRoute/PrivateRoute'
 
 const router = createBrowserRouter([
     {
@@ -30,6 +33,18 @@ const router = createBrowserRouter([
         
       ]
     },
+
+    {
+        path: '/dashboard',
+        element: <PrivateRoute><DashboardLayout></DashboardLayout></PrivateRoute>,
+        errorElement: <DisplayError></DisplayError>,
+        children: [
+          {
+            path:'/dashboard',
+            
+          },
+        ]
+    }
   ]);
 
 export default router;
