@@ -1,16 +1,21 @@
 import React, { useContext, useState } from 'react';
 import { useForm } from "react-hook-form";
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import { AuthContext } from '../../contexts/AuthProvider';
 import { FaGoogle } from "react-icons/fa";
+import { GoogleAuthProvider } from 'firebase/auth';
 
 const SignUp = () => {
     const { register, formState: { errors }, handleSubmit } = useForm();
-    const { createUser, updateUser } = useContext(AuthContext);
+    const { createUser, updateUser, providerLogin } = useContext(AuthContext);
     const [signUpError, setSignUPError] = useState('');
 
     const [createdUserEmail, setCreatedUserEmail] = useState('');
+
+    const navigate = useNavigate();
+
+    const googleProvider = new GoogleAuthProvider;
 
     const handleSignUp = (data) => {
         console.log(data);
@@ -26,7 +31,8 @@ const SignUp = () => {
                 updateUser(userInfo)
                     .then(() => {
                         saveUser(data.name, data.email, data.role)
-                        console.log("User info updated")
+                        console.log("User info updated");
+                        navigate('/dashboard');
                     })
                     .catch(err => console.log(err));
             })
@@ -35,21 +41,34 @@ const SignUp = () => {
                 setSignUPError(error.message)
             });
 
-        const saveUser = (name, email, role) => {
-            const user = { name, email, role };
-            fetch('http://localhost:5000/users', {
-                method: 'POST',
-                headers: {
-                    'content-type': 'application/json'
-                },
-                body: JSON.stringify(user)
-            })
-                .then(res => res.json())
-                .then(data => {
-                    setCreatedUserEmail(email);
+    }
 
-                })
-        };
+    const saveUser = (name, email, role) => {
+        const user = { name, email, role };
+        fetch(' https://used-product-resale-market-server-roan.vercel.app/users', {
+            method: 'POST',
+            headers: {
+                'content-type': 'application/json'
+            },
+            body: JSON.stringify(user)
+        })
+            .then(res => res.json())
+            .then(data => {
+                setCreatedUserEmail(email);
+
+            })
+    };
+
+    const handleGoogleSignIn = () => {
+        console.log("clicked!")
+        providerLogin(googleProvider)
+            .then(result => {
+                const user = result.user;
+                console.log(user);
+                saveUser(user.displayName, user.email, "buyer")
+                navigate('/dashboard');
+            })
+            .catch(error => console.error(error));
     }
 
     return (
@@ -117,7 +136,7 @@ const SignUp = () => {
 
             <div>
                 <div className="divider mt-4">OR</div>
-                <button className='btn btn-outline btn-secondary w-full mt-4 mb-3'> <FaGoogle /> <span className='mx-4'>Continue with google</span></button>
+                <button onClick={handleGoogleSignIn} className='btn btn-outline btn-secondary w-full mt-4 mb-3'> <FaGoogle /> <span className='mx-4'>Continue with google</span></button>
             </div>
         </div>
     );

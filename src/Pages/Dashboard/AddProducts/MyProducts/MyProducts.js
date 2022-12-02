@@ -18,7 +18,7 @@ const MyProducts = () => {
         queryKey: ['myproducts', user?.email],
         queryFn: async () => {
             try {
-                const res = await fetch(`http://localhost:5000/products?email=${user?.email}`);
+                const res = await fetch(`https://used-product-resale-market-server-roan.vercel.app/products?email=${user?.email}`);
                 const data = await res.json();
                 return data;
             }
@@ -28,18 +28,33 @@ const MyProducts = () => {
         }
     });
 
-    const handleDeleteDoctor = doctor => {
-        console.log(doctor);
-        fetch(`https://doctors-portal-server-swart.vercel.app/doctors/${doctor._id}`, {
+    const handleDeleteProduct = product => {
+        console.log(product);
+        fetch(`https://used-product-resale-market-server-roan.vercel.app/products/${product._id}`, {
             method: 'DELETE'
         })
             .then(res => res.json())
             .then(data => {
                 if (data.deletedCount > 0) {
                     refetch();
-                    toast.success(`Doctor ${doctor.name} deleted successfully`)
+                    toast.success(`${product.productName} deleted successfully`)
                 }
             })
+    }
+
+    const handleAdvertise = id => {
+        console.log(id);
+        fetch(` https://used-product-resale-market-server-roan.vercel.app/products/${id}`, {
+            method: 'PATCH'
+        })
+        .then(res => res.json())
+        .then(data => {
+            console.log(data);
+            if(data.modifiedCount > 0){
+                toast.success('Send for advertisement successfully!!');
+                refetch();
+            }
+        })
     }
 
     console.log(myProducts)
@@ -57,11 +72,11 @@ const MyProducts = () => {
                         <tr>
                             <th></th>
                             <th>Product Name</th>
-                            <th>Re-sale Price</th>
+                            <th>Asking Price</th>
                             <th>Date Posted</th>
+                            <th>Payment</th>
                             <th>Advertise</th>
                             <th>Action</th>
-                            <th>Payment</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -72,19 +87,24 @@ const MyProducts = () => {
                                 <td>{myProduct.productName}</td>
                                 <td>{myProduct.resalePrice}</td>
                                 <td>{myProduct.date}</td>
-                                <td></td>
-                                <td><label onClick={() => setDeletingProduct(myProduct)} htmlFor="confirmation-modal" className="btn btn-sm btn-error">Delete</label></td>
                                 <td>
                                     {
                                         myProduct?.resalePrice && !myProduct.paid &&
-                                        <Link to={`/dashboard/payment/${myProduct._id}`}>
-                                            <button className='btn btn-primary btn-sm'>Pay</button>
-                                        </Link>
+                                        <span className='text-secondary font-bold'>Not Paid</span>
+                                        // <Link to={`/dashboard/payment/${myProduct._id}`}>
+                                        //     <button className='btn btn-primary btn-sm'>Pay</button>
+                                        // </Link>
                                     }
                                     {
                                         myProduct.price && myProduct.paid && <span className='text-secondary font-bold'>Paid</span>
                                     }
                                 </td>
+                                <td>
+                                    <button onClick={() => handleAdvertise(myProduct._id)} className='btn btn-success btn-sm text-white hover:bg-green-600'>Advertise</button>
+                                    
+                                </td>
+                                <td><label onClick={() => setDeletingProduct(myProduct)} htmlFor="confirmation-modal" className="btn btn-sm btn-error text-white hover:bg-red-600">Delete</label></td>
+                                
                             </tr>)
                         }
 
@@ -97,7 +117,7 @@ const MyProducts = () => {
                 <ConfirmationModal
                     title={`Are you sure you want to delete`}
                     message={`If you delete ${deletingProduct.productName}, it can't be undone`}
-                    successAction={handleDeleteDoctor}
+                    successAction={handleDeleteProduct}
                     modalData={deletingProduct}
                     closeModal={closeModal}
 

@@ -35,23 +35,23 @@ const DashboardLayout = () => {
                         {
                             currentUser === "admin" && 
                             <>
-                                <li className='hover:text-primary px-8 border-b-2 border-font1 '><Link to='/dashboard/admin/allsellers' className='hover:bg-white font-semibold'>All Sellers</Link></li>
-                                <li className='hover:text-primary px-8 border-b-2 border-font1 '><Link to='/dashboard/admin/allbuyers' className='hover:bg-white font-semibold'>All Buyers</Link></li>
-                                <li className='hover:text-primary px-8 border-b-2 border-font1 '><Link to='/dashboard/admin/reported' className='hover:bg-white font-semibold'>Reported Items</Link></li>
+                                <li className='hover:text-primary px-8 border-b-2 border-font1 '><Link to='/dashboard/allsellers' className='hover:bg-white font-semibold'>All Sellers</Link></li>
+                                <li className='hover:text-primary px-8 border-b-2 border-font1 '><Link to='/dashboard/allbuyers' className='hover:bg-white font-semibold'>All Buyers</Link></li>
+                                <li className='hover:text-primary px-8 border-b-2 border-font1 '><Link to='/dashboard/reported' className='hover:bg-white font-semibold'>Reported Items</Link></li>
                             </>
                         }
                         {
                             currentUser === "seller" && 
                             <>
-                                <li className='hover:text-primary px-8 border-b-2 border-font1 '><Link to='/dashboard/seller/addproduct' className='hover:bg-white font-semibold'>Add a Product</Link></li>
-                                <li className='hover:text-primary px-8 border-b-2 border-font1 '><Link to='/dashboard/seller/myproducts' className='hover:bg-white font-semibold'>My Products</Link></li>
-                                <li className='hover:text-primary px-8 border-b-2 border-font1 '><Link to='/dashboard/seller/mybuyers' className='hover:bg-white font-semibold'>My Buyers</Link></li>
+                                <li className='hover:text-primary px-8 border-b-2 border-font1 '><Link to='/dashboard/addproduct' className='hover:bg-white font-semibold'>Add a Product</Link></li>
+                                <li className='hover:text-primary px-8 border-b-2 border-font1 '><Link to='/dashboard/myproducts' className='hover:bg-white font-semibold'>My Products</Link></li>
+                                <li className='hover:text-primary px-8 border-b-2 border-font1 '><Link to='/dashboard/mybuyers' className='hover:bg-white font-semibold'>My Buyers</Link></li>
                             </>
                         }
                         {
                             currentUser === "buyer" && 
                             <>
-                                <li className='hover:text-primary px-8 border-b-2 border-font1 '><Link to='/dashboard/buyer/myorders' className='hover:bg-white font-semibold'>My Orders</Link></li>
+                                <li className='hover:text-primary px-8 border-b-2 border-font1 '><Link to='/dashboard/myorders' className='hover:bg-white font-semibold'>My Orders</Link></li>
                             </>
                         }
 

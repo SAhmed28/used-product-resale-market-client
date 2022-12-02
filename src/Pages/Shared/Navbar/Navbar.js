@@ -26,17 +26,17 @@ const Navbar = () => {
                     <>
                         { currentUser === "admin" &&
                             <>
-                                <li><Link to="/dashboard/admin">Dashboard</Link></li>
+                                <li><Link to="/dashboard">Dashboard</Link></li>
                             </>
                         }
                         { currentUser === "seller" &&
                             <>
-                                <li><Link to="/dashboard/seller">Dashboard</Link></li>
+                                <li><Link to="/dashboard">Dashboard</Link></li>
                             </>
                         }
                         { currentUser === "buyer" &&
                             <>
-                                <li><Link to="/dashboard/buyer">Dashboard</Link></li>
+                                <li><Link to="/dashboard">Dashboard</Link></li>
                             </>
                         }
                         <li><button onClick={handleLogOut}>Sign Out</button></li>

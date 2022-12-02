@@ -26,6 +26,7 @@ const Login = () => {
                 const user = res.user;
                 console.log(user);
                 setLoginUserEmail(data.email);
+                navigate('/dashboard')
             })
             .catch(err => {
                 console.error(err);
@@ -76,7 +77,7 @@ const Login = () => {
 
             <div>
                 <div className="divider mt-4">OR</div>
-                <button className='btn btn-outline btn-secondary w-full mt-4 mb-3'> <FaGoogle/> <span className='mx-4'>Continue with google</span></button>
+                <button className='btn btn-outline btn-secondary w-full mt-4 mb-3' disabled> <FaGoogle/> <span className='mx-4'>Continue with google</span></button>
             </div>
         </div>
     );

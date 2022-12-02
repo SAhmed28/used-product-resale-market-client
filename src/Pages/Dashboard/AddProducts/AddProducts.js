@@ -10,6 +10,7 @@ const AddProducts = () => {
     const navigate = useNavigate();
 
     const brands = ['Apple', 'Asus', 'Dell', 'HP', 'Acer', 'Lenovo', 'Microsoft'];
+    const conditionTypes = ['excellent', 'good', 'fair'];
     const imgHostKey = process.env.REACT_APP_imgbb_key;
 
     console.log(process.env.REACT_APP_imgbb_key)
@@ -42,10 +43,14 @@ const AddProducts = () => {
                     sellerName: user?.displayName,
                     email: user?.email,
                     image: imgData.data.url,
-                    date
+                    date, 
+                    condition: data.condition,
+                    phone: data.phone,
+                    description: data.description
+
                 }
 
-                fetch('http://localhost:5000/products', {
+                fetch('https://used-product-resale-market-server-roan.vercel.app/products', {
                     method: 'POST',
                     headers: {
                         'content-type' : 'application/json'
@@ -56,14 +61,14 @@ const AddProducts = () => {
                 .then(result => {
                     console.log(result);
                     toast.success(`${data.productName} is added successfully!`);
-                    navigate('/dashboard/seller')
+                    navigate('/dashboard/myproducts')
                 })
             }
         })
     }
 
     return (
-        <div className='w-[450px] mx-auto shadow-xl p-7 my-4'>
+        <div className='w-[550px] mx-auto shadow-xl p-7 my-4'>
             <h2 className='text-2xl text-center text-primary font-bold'>Add A Product</h2>
 
             <form onSubmit={handleSubmit(handleAddProducts)}>
@@ -107,6 +112,43 @@ const AddProducts = () => {
 
                     {errors.productBrand && <p className='text-error'>{errors.productBrand?.message}</p>}
                 </div>
+
+
+
+
+                {/* Product Condition */}
+                <div className="form-control w-full">
+                    <label className="label">
+                        <span className="label-text">Product Condition</span>
+                    </label>
+                    <select 
+                    {...register("condition", { required: "Product Condition is required" })}
+                    className="select select-bordered w-full">
+                        {
+                            conditionTypes.map((condition, i) => 
+                            <option key={i} value={condition}>{condition}</option>)
+                        }
+                    </select>
+
+                    {errors.condition && <p className='text-error'>{errors.condition?.message}</p>}
+                </div>
+
+
+                {/* Phone */}
+                <div className="form-control w-full">
+                    <label className="label">
+                        <span className="label-text">Phone No.</span>
+                    </label>
+                    <input type="text"
+                        {...register("phone", {
+                            pattern: { value: /(?=.*[0-9])/, message: 'PHone No. be a number' }
+                        })}
+                        className="input input-bordered w-full"
+                    />
+                    {errors.phone && <p className='text-error'>{errors.phone?.message}</p>}
+                </div>
+
+
 
                 {/* location */}
                 <div className="form-control w-full">
@@ -161,6 +203,25 @@ const AddProducts = () => {
                     />
                     {errors.yearsOfUse && <p className='text-error'>{errors.yearsOfUse?.message}</p>}
                 </div>
+
+
+
+                {/* Description */}
+                <div className="form-control w-full">
+                    <label className="label">
+                        <span className="label-text">Product Description</span>
+                    </label>
+                    <textarea type="text" rows="10" cols="200"
+                        {...register("description")}
+                        className="input input-bordered w-full"
+                    ></textarea>
+                    {errors.yearsOfUse && <p className='text-error'>{errors.yearsOfUse?.message}</p>}
+                </div>
+{/* 
+                <textarea id="txtArea" rows="10" cols="70"></textarea> */}
+
+
+
 
                 <div className="form-control w-full">
                     <label className="label">
