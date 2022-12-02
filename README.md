@@ -1,3 +1,14 @@
+# Live website link:
+https://doctors-portal-ae18b.web.app/
+
+## Features
+* Full-stack website with React, MongoDB, Node & Express.js
+* Landing page with dashboard pages
+* Firebase Authentication Integrated
+* Image hosted in imgbb
+* Pixel perfect design
+* Most of the pages are responsive
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
