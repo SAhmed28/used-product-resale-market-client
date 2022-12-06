@@ -1,5 +1,5 @@
 # Live website link:
-https://doctors-portal-ae18b.web.app/
+https://used-product-resale-mark-e3488.web.app/
 
 ## Features
 * Full-stack website with React, MongoDB, Node & Express.js
