@@ -9,13 +9,14 @@ const AdvertisedItems = () => {
     const { user } = useContext(AuthContext);
     const [product, setProduct] = useState(null)
 
-    const { data: adProducts = [], refetch, isLoading } = useQuery({
+    const { data: adProducts, isLoading } = useQuery({
         queryKey: ['adproducts'],
         queryFn: async () => {
             try {
                 const res = await fetch(` https://used-product-resale-market-server-roan.vercel.app/products?isAdvertise=${true}`);
                 const data = await res.json();
-                console.log(data);
+                setProduct(data);
+                // console.log(data);
                 return data;
             }
             catch (error) {
@@ -24,7 +25,9 @@ const AdvertisedItems = () => {
         }
     });
 
-    if(isLoading){
+    // console.log(isLoading);
+
+    if (isLoading) {
         return <Loading></Loading>
     }
 
@@ -39,7 +42,6 @@ const AdvertisedItems = () => {
                 adProducts &&
 
                 <BookingModal
-                    // refetch={refetch}
                     product={product}
                     setProduct={setProduct}
                 ></BookingModal>

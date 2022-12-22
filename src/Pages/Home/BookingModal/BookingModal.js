@@ -3,18 +3,15 @@ import toast from 'react-hot-toast';
 import { AuthContext } from '../../../contexts/AuthProvider';
 import Loading from '../../Shared/Loading/Loading';
 
-const BookingModal = ({ product, setProduct }) => {
+const BookingModal = ({   product, setProduct }) => {
     const { user } = useContext(AuthContext);
 
-    
-    if (!product) {
-        return <Loading></Loading>
+    if(product === null){
+        return;
     }
 
     const { productName, resalePrice, _id } = product;
     console.log(productName)
-
-
 
 
     const handleBooking = event => {

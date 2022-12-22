@@ -1,54 +1,47 @@
-import React from 'react';
-import { useQuery } from '@tanstack/react-query'
+import React, { useState } from 'react';
 import { FaRegCheckCircle } from 'react-icons/fa'
-import Loading from '../Loading/Loading';
+import { useEffect } from 'react';
 
 const Card = ({ product, modalOpen, setProduct }) => {
     const { image, productName, productBrand, location, resalePrice, originalPrice, yearsOfUse, sellerName, email, date, _id } = product;
-    // console.log(product)
+    const [seller, setSeller] = useState(null);
+    // console.log(email)
     // console.log('modalOpen', modalOpen);
 
-    const { data: sellerInfo, isLoading, refetch } = useQuery({
-        queryKey: ['sellerInfo'],
-        queryFn: async () => {
-            try {
-                const res = await fetch(` https://used-product-resale-market-server-roan.vercel.app/users/role/${email}`);
-                const data = await res.json();
-                console.log('sellerInfo: ', data);
-                return data;
-            }
-            catch (error) {
-                console.error(error);
-            }
+    useEffect(() => {
+        if(email){
+            fetch(` https://used-product-resale-market-server-roan.vercel.app/users/role/${email}`)
+            .then(res => res.json())
+            .then(data => {
+                console.log(data)
+                setSeller(data);
+            })
+            .catch(err => console.error(err))
         }
-    });
+    }, [email])
 
-
-    if(isLoading){
-        return <Loading></Loading>
-    }
 
     return (
         <div className="card card-compact shadow-md hover:shadow-lg">
             <figure><img src={image} className="h-44 w-full" alt="productImage" /></figure>
             <div className="card-body">
-                <div className='ml-8'>
-                    <h2 className="card-title text-primary">  {productName} </h2>
-                    <ul>
-                        <li>Brand: {productBrand}</li>
-                        <li>location: {location}</li>
-                        <li>Re-sale Price: ${resalePrice}</li>
-                        <li>Original Price: ${originalPrice}</li>
-                        <li>Years of use: {yearsOfUse}</li>
-                        <li>Posted on: {date}</li>
+                <div className='mx-auto'>
+                    <h2 className="card-title pb-3 text-primary">  {productName} </h2>
+                    <ul className='text-lg'>
+                        <li><b>Brand: </b>{productBrand}</li>
+                        <li><b>location:</b> {location}</li>
+                        <li><b>Re-sale Price:</b> ${resalePrice}</li>
+                        <li><b>Original Price:</b> ${originalPrice}</li>
+                        <li><b>Years of use:</b> {yearsOfUse}</li>
+                        <li><b>Posted on:</b> {date}</li>
                     </ul>
 
                     <h3>
                         {
-                            sellerInfo?.verify === 'true' ?
-                                <div className='flex align-middle font-bold mt-3'>
+                            seller?.verify === 'true' ?
+                                <div className='flex items-center font-bold mt-3'>
                                     <h5>Seller: {sellerName} </h5>
-                                    <FaRegCheckCircle className='ml-1 mt-1 text-primary text-lg' />
+                                    <FaRegCheckCircle className='ml-1 mt-1 text-green-500 text-lg' />
                                 </div>
                                 :
                                 <h5 className='font-bold mt-3'>Seller: {sellerName}</h5>
@@ -65,7 +58,7 @@ const Card = ({ product, modalOpen, setProduct }) => {
                                 <label
                                     onClick={() => setProduct(product)}
                                     htmlFor="booking-modal"
-                                    className="btn btn-primary bg-gradient-to-r from-primary to-secondary px-12 text-white uppercase">
+                                    className="btn btn-primary btn-sm mt-3 px-6 text-white uppercase">
                                     Book Now
                                 </label>
                             </>
